@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Bellu Code changelog and product releases." />
+    <meta name="theme-color" content="#faf9f6" />
+    <link rel="icon" type="image/svg+xml" href="/src/images/only-logo-square.svg" />
+    <link rel="stylesheet" href="/src/legacy.css" />
+    <title>Changelog — Bellu Code</title>
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <nav class="nav-shell container" aria-label="Main navigation">
+        <a class="brand" href="/#top" aria-label="Bellu Code home">
+          <img class="brand-logo brand-logo-light" src="/src/images/logo-label-whtie-theme.svg" alt="" />
+          <img class="brand-logo brand-logo-dark" src="/src/images/logo-label-black-theme.svg" alt="" />
+        </a>
+        <div class="nav-links" id="primary-links">
+          <details class="nav-dropdown">
+            <summary>Product</summary>
+            <div class="nav-dropdown-menu">
+              <a href="/#about">Bellu Code</a>
+              <a href="/security-intelligence-graph.html">Security Intelligence Graph</a>
+            </div>
+          </details>
+          <a href="/#vision">Company</a><a href="/changelog.html" aria-current="page">Changelog</a><a href="/#blogs">Blogs</a>
+        </div>
+        <div class="nav-actions">
+          <a class="sign-in" href="/#footer">Sign in</a>
+          <a class="button button-dark button-small" href="/#download">Download</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="changelog-page container">
+        <header class="changelog-page-header">
+          <p class="eyebrow">Changelog</p>
+          <h1>What’s new in Bellu Code.</h1>
+          <p>Detailed notes on new capabilities, improvements, fixes, and the work behind each release.</p>
+        </header>
+
+        <div class="changelog-grid">
+          <article>
+            <span class="timeline-step" aria-hidden="true">01</span>
+            <time datetime="2026-11-18">Nov 18, 2026</time>
+            <div class="update-content">
+              <span class="update-tag">New</span>
+              <h3>Voice conversations with agents</h3>
+              <p>You can now talk with your agents in a real-time voice conversation. Describe a change out loud, ask what an agent is working on, and hear concise updates as work moves forward. Voice conversations are available wherever you work with Bellu Code.</p>
+              <div class="release-details">
+                <section><h4>Start a conversation</h4><p>When an agent is idle, select the waveform button next to the input. Bellu Code starts a new voice session, while the existing chat history stays available for context.</p></section>
+                <section><h4>Stay informed while work runs</h4><p>Keep asking questions while an agent changes files or runs checks. Hear short progress notes, review the final answer, and jump into the written conversation at any time.</p></section>
+                <section><h4>Voice and dictation</h4><p>Voice conversations are separate from dictation. Dictation turns speech into text in the prompt; voice mode creates a two-way conversation with spoken agent replies.</p></section>
+              </div>
+            </div>
+          </article>
+
+          <article>
+            <span class="timeline-step" aria-hidden="true">02</span>
+            <time datetime="2026-11-04">Nov 4, 2026</time>
+            <div class="update-content">
+              <span class="update-tag">Improved</span>
+              <h3>Workspace-wide project search</h3>
+              <p>Search now understands files, symbols, recent changes, and project conventions together, helping agents retrieve the context most likely to be useful.</p>
+              <div class="release-details">
+                <section><h4>More relevant results</h4><p>Search ranks exact names, nearby definitions, referenced files, and active changes instead of returning a flat list of matching text.</p></section>
+                <section><h4>Live workspace context</h4><p>Agents receive a fresher view of newly added files, open changes, and recently edited symbols as a session progresses.</p></section>
+                <section><h4>Quicker refinement</h4><p>Results update as you narrow a query, making it easier to move from a broad concept to the exact symbol or file you need.</p></section>
+              </div>
+            </div>
+          </article>
+
+          <article>
+            <span class="timeline-step" aria-hidden="true">03</span>
+            <time datetime="2026-10-21">Oct 21, 2026</time>
+            <div class="update-content">
+              <span class="update-tag">New</span>
+              <h3>Custom project instructions</h3>
+              <p>Create reusable instruction profiles for architecture rules, testing patterns, release conventions, and the tools each team uses.</p>
+              <div class="release-details">
+                <section><h4>Profiles for every workspace</h4><p>Choose an instruction profile for a project or repository. Bellu Code applies the profile automatically to new chats and background tasks.</p></section>
+                <section><h4>Clearer guardrails</h4><p>Important constraints remain visible in the chat so you can review what the agent is following and adjust it before work begins.</p></section>
+                <section><h4>Team consistency</h4><p>Share the same project conventions across developers, agents, and long-running workflows without repeating instructions in every request.</p></section>
+              </div>
+            </div>
+          </article>
+
+          <article>
+            <span class="timeline-step" aria-hidden="true">04</span>
+            <time datetime="2026-10-08">Oct 8, 2026</time>
+            <div class="update-content">
+              <span class="update-tag">Fixed</span>
+              <h3>More reliable background tasks</h3>
+              <p>Long-running tasks now provide clearer progress, preserve status across interruptions, and recover with more helpful resume and retry actions.</p>
+              <div class="release-details">
+                <section><h4>Better status updates</h4><p>Tasks show the current stage, completed work, and next action instead of a single indeterminate progress indicator.</p></section>
+                <section><h4>Safer recovery</h4><p>After an interruption, review completed changes before continuing. Failed steps can be retried without repeating unrelated work.</p></section>
+                <section><h4>Clearer failures</h4><p>Error summaries identify the failed command or tool and include a direct next step when a task cannot continue automatically.</p></section>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" id="footer">
+      <div class="footer-bottom container">
+        <a class="footer-logo-link" href="/#top" aria-label="Bellu Code home"><img class="footer-logo" src="/src/images/only-logo-square.svg" alt="" /></a>
+        <span>© <span id="year"></span> Bellu Code</span>
+        <div class="footer-controls">
+          <button class="theme-toggle" type="button" aria-label="Switch to dark theme">Dark theme</button>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module">
+      document.querySelector("#year").textContent = String(new Date().getFullYear());
+      document.querySelector(".theme-toggle").addEventListener("click", (event) => {
+        const dark = document.body.classList.toggle("dark-theme");
+        event.currentTarget.textContent = dark ? "Light theme" : "Dark theme";
+        event.currentTarget.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+        document.querySelector('meta[name="theme-color"]').content = dark ? "#111110" : "#faf9f6";
+      });
+    </script>
+  </body>
+</html>
