@@ -12,7 +12,8 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     autoRaf: true,
     lerp: 0.085,
     wheelMultiplier: 0.9,
-    anchors: { offset: -64 },
+    // Sticky header height (alpha banner + nav) plus a little space.
+    anchors: { offset: -112 },
   });
 }
 
@@ -86,6 +87,17 @@ function renderHeroGrid(svg) {
   }).join("");
 
   svg.innerHTML = `<g stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round">${tiles}</g>${slabMarkup}`;
+}
+
+// Alpha notice: stays closed once a visitor dismisses it.
+const alphaBanner = $("#alpha-banner");
+if (alphaBanner) {
+  const key = "bellu-alpha-dismissed";
+  try { if (localStorage.getItem(key) === "1") alphaBanner.hidden = true; } catch { /* storage blocked */ }
+  $(".alpha-close", alphaBanner).addEventListener("click", () => {
+    alphaBanner.hidden = true;
+    try { localStorage.setItem(key, "1"); } catch { /* storage blocked */ }
+  });
 }
 
 const heroGrid = $("#hero-grid");

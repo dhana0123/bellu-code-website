@@ -26,6 +26,8 @@
   --blue: #8fb8f8;
   --peach: #ffe4c6;
   --orange: #fcc58a;
+  --orange-light: #ffd9cc;   /* light tint of the logo orange #FF4A23 */
+  --orange-lighter: #ffe9e1;
 
   --ease: cubic-bezier(0.215, 0.61, 0.355, 1);
   --gutter: 24px;
@@ -47,7 +49,7 @@ body.dark-theme {
 }
 
 * { box-sizing: border-box; }
-html { scroll-padding-top: 72px; overflow-x: clip; }
+html { scroll-padding-top: 112px; overflow-x: clip; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.55; }
 h1, h2, h3, h4, p, dl, dd, dt, ul { margin: 0; }
 ul { padding: 0; list-style: none; }
@@ -107,9 +109,21 @@ body.dark-theme .button-dark:hover { background: #d9d9d4; }
 .button-outline { border-color: var(--line); background: var(--card); color: var(--ink); }
 .button-outline:hover { border-color: var(--ink); }
 
+/* Alpha notice above the header */
+/* Light orange tints of the logo colour (#FF4A23), with black text. */
+.alpha-banner { background: var(--orange-light); color: #0a0a0a; font-size: 13px; }
+.alpha-banner[hidden] { display: none; }
+.alpha-banner p { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 16px; min-height: 40px; padding-block: 6px; }
+.alpha-tag { padding: 2px 7px; background: #0a0a0a; color: #fff; font: 500 10px/1.4 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.alpha-banner a { font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+.alpha-banner a:hover { text-decoration-thickness: 2px; }
+.alpha-close { margin-left: auto; width: 28px; height: 28px; border: 0; background: transparent; font-size: 18px; line-height: 1; }
+.alpha-close:hover { background: rgb(10 10 10 / 10%); }
+.alpha-banner :focus-visible, .alpha-card :focus-visible { outline-color: #0a0a0a; }
+
 /* Header */
 .site-header { position: sticky; z-index: 30; top: 0; background: var(--paper); }
-.nav-shell { height: 56px; display: flex; align-items: center; gap: 32px; }
+.nav-shell { position: relative; height: 56px; display: flex; align-items: center; gap: 32px; }
 .brand { flex: none; }
 .brand-logo { width: auto; height: 22px; }
 .brand-logo-dark { display: none; }
@@ -167,6 +181,7 @@ h1 { max-width: 19ch; font-size: clamp(44px, 7vw, 108px); line-height: 1; letter
   grid-template-columns: repeat(6, minmax(0, 1fr));
   grid-auto-rows: var(--tile-h);
   gap: 8px;
+  /* Only the first row overlaps the stage edge; the app window stays clear. */
   margin-top: calc(-1 * var(--tile-h) / 2);
 }
 .hero-tiles li {
@@ -180,9 +195,14 @@ h1 { max-width: 19ch; font-size: clamp(44px, 7vw, 108px); line-height: 1; letter
   letter-spacing: -0.03em;
   text-align: center;
 }
-.hero-tiles li:nth-child(1) { background: var(--sky); }
-.hero-tiles li:nth-child(4) { background: var(--mint); }
-.hero-tiles li:nth-child(6) { background: var(--peach); }
+/* Six stages along row 1, then tiles stepping down and outward on the right. */
+.hero-tiles li:nth-child(n + 4) { grid-row: 1; }
+.hero-tiles li:nth-child(4) { grid-column: 1; background: var(--sky); }
+.hero-tiles .t-b { grid-column: 5; grid-row: 2; }
+.hero-tiles .t-c { grid-column: 6; grid-row: 2; background: var(--pink); }
+.hero-tiles .t-a { grid-column: 6; grid-row: 3; }
+.hero-tiles li:nth-child(7) { background: var(--mint); }
+.hero-tiles li:nth-child(9) { background: var(--peach); }
 
 /* Desktop app preview inside the hero stage. Fixed light colours so it reads
    like a real app window in both themes. */
@@ -427,6 +447,18 @@ body.dark-theme .change-row:hover .update-tag { background: #fff; }
 .stats dt { margin-bottom: 12px; color: var(--muted); font: 500 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .stats dd { font-family: var(--display); font-size: clamp(52px, 8vw, 120px); line-height: 0.95; letter-spacing: -0.05em; }
 
+/* Public alpha */
+.alpha-section { padding-top: 0; }
+.alpha-card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 48px; padding: clamp(28px, 4vw, 56px); background: var(--orange-lighter); color: #0a0a0a; border-top: 4px solid #ff4a23; }
+.alpha-card .tag { background: #0a0a0a; color: #fff; }
+.alpha-product { margin: 28px 0 10px; font: 500 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; }
+.alpha-head h2 { max-width: 12ch; font-size: clamp(34px, 4.4vw, 64px); }
+.alpha-body { display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; font-size: 16px; }
+.alpha-sign { font-family: var(--display); font-size: 22px; letter-spacing: -0.02em; }
+.alpha-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.alpha-actions .button-dark { background: #0a0a0a; color: #fff; }
+.alpha-actions .button-outline { background: #fff; color: #0a0a0a; border-color: rgb(10 10 10 / 15%); }
+
 /* Footer */
 .footer { padding-top: 56px; background: #0a0a0a; color: #fff; overflow: hidden; }
 .footer-main { display: grid; grid-template-columns: 1.5fr repeat(5, 1fr); gap: 24px; padding-bottom: 64px; }
@@ -451,14 +483,16 @@ body.dark-theme .change-row:hover .update-tag { background: #fff; }
   .nav-shell { gap: 16px; }
   .menu-toggle { width: 36px; height: 36px; display: grid; place-content: center; gap: 5px; border: 1px solid var(--line); background: transparent; }
   .menu-toggle span { width: 16px; height: 1px; background: currentColor; }
-  .nav-links { display: none; position: absolute; top: 56px; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; padding: 4px var(--gutter) 16px; border-bottom: 1px solid var(--line); background: var(--paper); }
+  .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; padding: 4px var(--gutter) 16px; border-bottom: 1px solid var(--line); background: var(--paper); }
   .nav-links.is-open { display: flex; }
   .nav-links > a, .nav-dropdown > summary { display: flex; padding: 14px 0; border-bottom: 1px solid var(--line); }
   .nav-dropdown > summary { justify-content: space-between; }
   .nav-dropdown-menu { position: static; width: auto; padding: 0 0 0 12px; border: 0; box-shadow: none; }
   .nav-actions { margin-left: auto; }
   .contact-link { display: none; }
-  .hero-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 8px; }
+  /* Tablet: a plain 3 x 3 grid that overlaps the stage edge only. */
+  .hero-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: calc(-1 * var(--tile-h) / 2); }
+  .hero-tiles li, .hero-tiles li:nth-child(n) { grid-column: auto; grid-row: auto; }
   .hero-card { display: none; }
   .hero-intro { width: min(560px, calc(100% + var(--stage-pad))); }
   .about-section { grid-template-columns: 1fr; gap: 28px; }
@@ -483,10 +517,13 @@ body.dark-theme .change-row:hover .update-tag { background: #fff; }
   .hero-stage { --stage-pad: 12px; padding-bottom: 48px; }
   .hero-intro { width: calc(100% + var(--stage-pad) * 2); margin-right: calc(-1 * var(--stage-pad)); padding: 4px 0 20px; }
   .app-frame { margin-top: 16px; }
-  .hero-tiles { --tile-h: 72px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero-tiles { --tile-h: 60px; gap: 6px; }
+  .hero-tiles li { font-size: 14px; box-shadow: 0 0 0 6px var(--paper); }
   .manifesto { padding-block: 72px; }
   .manifesto p { text-indent: 12%; }
   .block-head { grid-template-columns: 1fr; margin-bottom: 32px; }
+  .alpha-card { grid-template-columns: 1fr; gap: 24px; }
+  .alpha-banner .alpha-text { flex-basis: calc(100% - 100px); }
   .about-capabilities { grid-template-columns: 1fr; }
   .about-capabilities article { min-height: 0; padding: 20px; }
   .change-row { grid-template-columns: auto 1fr 20px; gap: 8px 12px; padding: 16px 4px; }

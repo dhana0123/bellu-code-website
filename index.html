@@ -13,6 +13,15 @@
   </head>
   <body>
     <header class="site-header" id="top">
+      <div class="alpha-banner" id="alpha-banner" role="region" aria-label="Alpha release notice">
+        <p class="container">
+          <span class="alpha-tag">Alpha</span>
+          <span class="alpha-text">Bellu Code is in alpha. Expect some bugs: we're fixing things actively.</span>
+          <a href="https://github.com/dhana0123/bellu-code-website/issues" target="_blank" rel="noopener noreferrer">Report a bug ↗</a>
+          <a href="https://github.com/dhana0123/bellu-code-website/pulls" target="_blank" rel="noopener noreferrer">Open a PR ↗</a>
+          <button class="alpha-close" type="button" aria-label="Dismiss alpha notice">×</button>
+        </p>
+      </div>
       <nav class="nav-shell container" aria-label="Main navigation">
         <a class="brand" href="#top" aria-label="Bellu Code home">
           <img class="brand-logo brand-logo-light" src="/src/images/logo-label-mono-light.svg" alt="" width="602" height="108" />
@@ -114,6 +123,9 @@
         </div>
 
         <ul class="hero-tiles" aria-label="What Bellu Code covers">
+          <li class="t-a">Code scan</li>
+          <li class="t-b">Secrets</li>
+          <li class="t-c">Dependencies</li>
           <li>Discover</li>
           <li>Assess</li>
           <li>Prevent</li>
@@ -258,6 +270,25 @@
           <article><div class="blog-thumb" aria-hidden="true"></div><p class="blog-meta">Oct 30, 2026 · Design</p><h3>The interface is not the agent: designing trust</h3><p class="blog-author">Alex Morgan · 5 min read</p></article>
           <article><div class="blog-thumb" aria-hidden="true"></div><p class="blog-meta">Oct 16, 2026 · Research</p><h3>What software teams tell us about context</h3><p class="blog-author">Riya Patel · 8 min read</p></article>
           <article><div class="blog-thumb" aria-hidden="true"></div><p class="blog-meta">Sep 28, 2026 · Company</p><h3>Why we are building Bellu Code in the open</h3><p class="blog-author">Bellu team · 4 min read</p></article>
+        </div>
+      </section>
+
+      <section class="section container alpha-section" id="alpha" aria-labelledby="alpha-title">
+        <div class="alpha-card" data-reveal>
+          <div class="alpha-head">
+            <p class="tag">Public alpha</p>
+            <p class="alpha-product">Bellu Code</p>
+            <h2 id="alpha-title">Built in the open. Improved together.</h2>
+          </div>
+          <div class="alpha-body">
+            <p>Bellu Code is now available in Alpha. We're actively developing, testing and improving the product.</p>
+            <p>Expect rough edges. Report bugs, share feedback and contribute pull requests. Every contribution helps shape the future of Bellu Code.</p>
+            <p class="alpha-sign">Build with us.</p>
+            <div class="alpha-actions">
+              <a class="button button-dark button-arrow" href="https://github.com/dhana0123/bellu-code-website/issues" target="_blank" rel="noopener noreferrer">Report a bug <span aria-hidden="true">↗</span></a>
+              <a class="button button-outline button-arrow" href="https://github.com/dhana0123/bellu-code-website/pulls" target="_blank" rel="noopener noreferrer">Open a pull request <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
         </div>
       </section>
 

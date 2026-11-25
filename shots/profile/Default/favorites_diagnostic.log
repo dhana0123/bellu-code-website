@@ -1,0 +1,12 @@
+2026-11-25 17:10:27.820: [INFO] CurrentProfilePath: C:\Users\Sagar\Music\bellu-code-landing\shots\profile\Default
+2026-11-25 17:10:27.820: [INFO] Profiles total count: 1
+2026-11-25 17:10:27.821: [INFO] Profile: name=Profile 1 path=C:\Users\Sagar\Music\bellu-code-landing\shots\profile\Default lastActive=2026-11-25T17:10:27.794Z
+2026-11-25 17:10:27.821: [INFO] LastUsedProfileDir: C:\Users\Sagar\Music\bellu-code-landing\shots\profile\Default
+2026-11-25 17:10:27.821: [INFO] MostRecentlyActiveProfile: name=Profile 1 path=C:\Users\Sagar\Music\bellu-code-landing\shots\profile\Default lastActive=2026-11-25T17:10:27.794Z
+2026-11-25 17:10:27.821: [INFO] OnDoneLoading sync enabled: 0
+2026-11-25 17:10:27.821: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-11-25 17:10:27.821: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-11-25 17:10:27.821: [INFO] BookmarksSnapshot Startup total=3 bar=3 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-11-25 17:10:27.823: [INFO] RecordSyncInitDuration has_sync_been_enabled: 0 state: 0
+2026-11-25 17:10:28.279: [INFO] VisibilityChanged: 0
+2026-11-25 17:10:32.608: [INFO] BookmarksSnapshot Shutdown total=3 bar=3 other=0 mobile=0 showBar=0 showBarNTP=1
