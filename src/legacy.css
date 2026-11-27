@@ -940,3 +940,11 @@ body.dark-theme .graph-company-art b { color: #f2f1ee; }
   }
   .pipeline-layer { animation: none; }
 }
+/* Icons (Phosphor, inline SVG) */
+.ic { width: 1.15em; height: 1.15em; flex: none; vertical-align: -0.2em; }
+.theme-toggle .ic-sun, body.dark-theme .theme-toggle .ic-moon { display: none; }
+body.dark-theme .theme-toggle .ic-sun { display: inline-block; }
+/* Nav icon buttons (GitHub, theme) */
+.nav-actions .nav-icon { display: inline-grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--ink, #171717); cursor: pointer; transition: background 0.2s; }
+.nav-actions .nav-icon:hover { background: rgb(128 128 128 / 18%); opacity: 1; }
+.nav-actions .nav-icon .ic { width: 20px; height: 20px; vertical-align: 0; }

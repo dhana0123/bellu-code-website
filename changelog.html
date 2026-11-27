@@ -4,17 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Bellu Code changelog and product releases." />
-    <meta name="theme-color" content="#faf9f6" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" type="image/svg+xml" href="/src/images/only-logo-square.svg" />
-    <link rel="stylesheet" href="/src/legacy.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" />
     <title>Changelog — Bellu Code</title>
   </head>
   <body>
+    <script>try{if(localStorage.getItem("bellu-theme")==="dark")document.body.classList.add("dark-theme")}catch(e){}</script>
     <header class="site-header" id="top">
+      <div class="alpha-banner" id="alpha-banner" role="region" aria-label="Alpha release notice">
+        <p class="container">
+          <span class="alpha-tag">Alpha</span>
+          <span class="alpha-text">Bellu Code is in alpha. Expect some bugs: we're fixing things actively.</span>
+          <a href="https://github.com/dhana0123/bellu-code/issues" target="_blank" rel="noopener noreferrer">Report a bug ↗</a>
+          <a href="https://github.com/dhana0123/bellu-code/pulls" target="_blank" rel="noopener noreferrer">Open a PR ↗</a>
+          <button class="alpha-close" type="button" aria-label="Dismiss alpha notice">×</button>
+        </p>
+      </div>
       <nav class="nav-shell container" aria-label="Main navigation">
         <a class="brand" href="/#top" aria-label="Bellu Code home">
-          <img class="brand-logo brand-logo-light" src="/src/images/logo-label-whtie-theme.svg" alt="" />
-          <img class="brand-logo brand-logo-dark" src="/src/images/logo-label-black-theme.svg" alt="" />
+          <img class="brand-logo brand-logo-light" src="/src/images/logo-label-mono-light.svg" alt="" width="602" height="108" />
+          <img class="brand-logo brand-logo-dark" src="/src/images/logo-label-mono-dark.svg" alt="" width="602" height="108" />
         </a>
         <div class="nav-links" id="primary-links">
           <details class="nav-dropdown">
@@ -24,105 +36,225 @@
               <a href="/security-intelligence-graph.html">Security Intelligence Graph</a>
             </div>
           </details>
-          <a href="/#vision">Company</a><a href="/changelog.html" aria-current="page">Changelog</a><a href="/#blogs">Blogs</a>
+          <a href="/#about">About</a><a href="/#vision">Company</a><a href="/changelog.html" aria-current="page">Changelog</a><a href="/#blogs">Blogs</a><a href="https://belluai.com" target="_blank" rel="noopener noreferrer">Research</a>
         </div>
         <div class="nav-actions">
-          <a class="sign-in" href="/#footer">Sign in</a>
+          <a class="nav-icon" href="https://github.com/dhana0123/bellu-code" target="_blank" rel="noopener noreferrer" aria-label="Bellu Code on GitHub" title="GitHub"><svg class="ic ic-gh" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg></a>
+          <button class="nav-icon theme-toggle" type="button" aria-label="Switch to dark theme" title="Switch to dark theme" aria-pressed="false"><svg class="ic ic-moon" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></svg><svg class="ic ic-sun" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></svg></button>
+          <a class="button button-soft button-small" href="#footer">Sign in</a>
           <a class="button button-dark button-small" href="/#download">Download</a>
         </div>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-links" aria-label="Open menu">
+          <span></span><span></span>
+        </button>
       </nav>
     </header>
 
     <main>
-      <section class="changelog-page container">
-        <header class="changelog-page-header">
-          <p class="eyebrow">Changelog</p>
-          <h1>What’s new in Bellu Code.</h1>
-          <p>Detailed notes on new capabilities, improvements, fixes, and the work behind each release.</p>
-        </header>
+      <section class="changelog-hero container" data-reveal>
+        <p class="tag">Changelog</p>
+        <h1>What’s new in Bellu Code.</h1>
+        <p>Shipped in November 2026, newest first.</p>
+      </section>
 
-        <div class="changelog-grid">
-          <article>
-            <span class="timeline-step" aria-hidden="true">01</span>
-            <time datetime="2026-11-18">Nov 18, 2026</time>
-            <div class="update-content">
-              <span class="update-tag">New</span>
-              <h3>Voice conversations with agents</h3>
-              <p>You can now talk with your agents in a real-time voice conversation. Describe a change out loud, ask what an agent is working on, and hear concise updates as work moves forward. Voice conversations are available wherever you work with Bellu Code.</p>
-              <div class="release-details">
-                <section><h4>Start a conversation</h4><p>When an agent is idle, select the waveform button next to the input. Bellu Code starts a new voice session, while the existing chat history stays available for context.</p></section>
-                <section><h4>Stay informed while work runs</h4><p>Keep asking questions while an agent changes files or runs checks. Hear short progress notes, review the final answer, and jump into the written conversation at any time.</p></section>
-                <section><h4>Voice and dictation</h4><p>Voice conversations are separate from dictation. Dictation turns speech into text in the prompt; voice mode creates a two-way conversation with spoken agent replies.</p></section>
-              </div>
-            </div>
-          </article>
+      <div class="halftone" aria-hidden="true"></div>
 
-          <article>
-            <span class="timeline-step" aria-hidden="true">02</span>
-            <time datetime="2026-11-04">Nov 4, 2026</time>
-            <div class="update-content">
-              <span class="update-tag">Improved</span>
-              <h3>Workspace-wide project search</h3>
-              <p>Search now understands files, symbols, recent changes, and project conventions together, helping agents retrieve the context most likely to be useful.</p>
-              <div class="release-details">
-                <section><h4>More relevant results</h4><p>Search ranks exact names, nearby definitions, referenced files, and active changes instead of returning a flat list of matching text.</p></section>
-                <section><h4>Live workspace context</h4><p>Agents receive a fresher view of newly added files, open changes, and recently edited symbols as a session progresses.</p></section>
-                <section><h4>Quicker refinement</h4><p>Results update as you narrow a query, making it easier to move from a broad concept to the exact symbol or file you need.</p></section>
-              </div>
-            </div>
-          </article>
+      <section class="container release-list" aria-label="Changes">
+        <article class="release" id="fresh-threat-data" data-kind="improved" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-27">Nov 27, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">Improved</span>
+            <h2>Always-fresh threat data</h2>
+            <ul class="release-points">
+              <li>Bellu Code uses the shared Bellu threat database, so your vulnerability data comes from one trusted source.</li>
+              <li>Updates to the database reach the app without manual work.</li>
+              <li>It runs on Windows as well, with safe handling of update files and disk space.</li>
+            </ul>
+          </div>
+        </article>
 
-          <article>
-            <span class="timeline-step" aria-hidden="true">03</span>
-            <time datetime="2026-10-21">Oct 21, 2026</time>
-            <div class="update-content">
-              <span class="update-tag">New</span>
-              <h3>Custom project instructions</h3>
-              <p>Create reusable instruction profiles for architecture rules, testing patterns, release conventions, and the tools each team uses.</p>
-              <div class="release-details">
-                <section><h4>Profiles for every workspace</h4><p>Choose an instruction profile for a project or repository. Bellu Code applies the profile automatically to new chats and background tasks.</p></section>
-                <section><h4>Clearer guardrails</h4><p>Important constraints remain visible in the chat so you can review what the agent is following and adjust it before work begins.</p></section>
-                <section><h4>Team consistency</h4><p>Share the same project conventions across developers, agents, and long-running workflows without repeating instructions in every request.</p></section>
-              </div>
-            </div>
-          </article>
+        <article class="release" id="inventory" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-26">Nov 26, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>AI and cloud inventory</h2>
+            <ul class="release-points">
+              <li>See every AI model, software package and cloud resource you rely on in one list (AI-BOM and Cloud-BOM).</li>
+              <li>Know what you're running before you decide what to secure.</li>
+              <li>Built-in AI rules flag risky AI setups.</li>
+            </ul>
+          </div>
+        </article>
 
-          <article>
-            <span class="timeline-step" aria-hidden="true">04</span>
-            <time datetime="2026-10-08">Oct 8, 2026</time>
-            <div class="update-content">
-              <span class="update-tag">Fixed</span>
-              <h3>More reliable background tasks</h3>
-              <p>Long-running tasks now provide clearer progress, preserve status across interruptions, and recover with more helpful resume and retry actions.</p>
-              <div class="release-details">
-                <section><h4>Better status updates</h4><p>Tasks show the current stage, completed work, and next action instead of a single indeterminate progress indicator.</p></section>
-                <section><h4>Safer recovery</h4><p>After an interruption, review completed changes before continuing. Failed steps can be retried without repeating unrelated work.</p></section>
-                <section><h4>Clearer failures</h4><p>Error summaries identify the failed command or tool and include a direct next step when a task cannot continue automatically.</p></section>
-              </div>
-            </div>
-          </article>
-        </div>
+        <article class="release" id="live-protection" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-26">Nov 26, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>Live protection</h2>
+            <ul class="release-points">
+              <li>A runtime sensor watches for risky activity while your systems run.</li>
+              <li>Suspicious behavior is flagged as it happens.</li>
+              <li>Alerts show up in the same place as the rest of your security view.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="more-clouds" data-kind="improved" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-26">Nov 26, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">Improved</span>
+            <h2>More clouds</h2>
+            <ul class="release-points">
+              <li>Scanning now works across multiple cloud providers, not just one.</li>
+              <li>Deeper checks cover who has access, how your network is set up, and where your data lives.</li>
+              <li>Everything feeds into the same security map.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="desktop-web" data-kind="improved" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-25">Nov 25–26, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">Improved</span>
+            <h2>Same experience on desktop and web</h2>
+            <ul class="release-points">
+              <li>The desktop app and the web app now look and behave the same.</li>
+              <li>The desktop build issue is fixed.</li>
+              <li>You can switch between them without relearning anything.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="scanners" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-25">Nov 25, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>First security scanners</h2>
+            <ul class="release-points">
+              <li>The first built-in scanners check your projects for security problems.</li>
+              <li>This is the base for the upcoming secret and software inventory scans.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="check-first" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-22">Nov 22, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>Know before you change code</h2>
+            <ul class="release-points">
+              <li>Before editing, Bellu Code checks your code against known weaknesses.</li>
+              <li>It limits each plan to the 20 most important weaknesses so the output stays focused.</li>
+              <li>Edits are based on what is actually risky, not guesses.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="actively-exploited" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-22">Nov 22, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>See what's being exploited</h2>
+            <ul class="release-points">
+              <li>See which vulnerabilities attackers are using right now.</li>
+              <li>See which weaknesses tend to be exploited together.</li>
+              <li>Use this to fix what matters first.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="threat-knowledge" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-21">Nov 21–22, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>A knowledge base of known threats</h2>
+            <ul class="release-points">
+              <li>It pulls from NVD, CISA KEV, EPSS, OSV, GitHub Advisories, MITRE ATT&amp;CK, CAPEC and Exploit-DB.</li>
+              <li>Search any CVE and see what's connected to it, including related weaknesses, exploits and fixes.</li>
+              <li>Stats show how complete each source is.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="security-map" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-14">Nov 14–15, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>See your security as a map</h2>
+            <ul class="release-points">
+              <li>Your cloud, code and risks appear as one connected graph.</li>
+              <li>Follow how a weak spot in one place can lead to another.</li>
+              <li>Switch between views to focus on what you care about.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="connect-cloud" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-13">Nov 13, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>Connect your cloud</h2>
+            <ul class="release-points">
+              <li>Link AWS and GitHub with read-only access.</li>
+              <li>Bellu Code can look at your setup but cannot change anything.</li>
+              <li>Setup takes a few clicks.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="security-sessions" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-13">Nov 13, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>Security inside your sessions</h2>
+            <ul class="release-points">
+              <li>A security menu on Home gives you one-click access to security tools.</li>
+              <li>Security panels open inside any coding session.</li>
+              <li>You don't need to leave your work to check security.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="new-look" data-kind="new" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-12">Nov 12–13, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">New</span>
+            <h2>New look</h2>
+            <ul class="release-points">
+              <li>New Bellu Code logo and icons.</li>
+              <li>Orange brand color for buttons, focus and selection.</li>
+              <li>A sharp, square design across the app.</li>
+              <li>Open sessions are tinted in their project color so they're easy to tell apart.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="release" id="fixes" data-kind="fixed" data-reveal>
+          <div class="release-meta"><time datetime="2026-11-12">Nov 12–13, 2026</time></div>
+          <div class="release-body">
+            <span class="update-tag">Fixed</span>
+            <h2>Sign-in and speed fixes</h2>
+            <ul class="release-points">
+              <li>Sign-in now shows the app's own screen instead of a browser prompt.</li>
+              <li>The web app loads correctly.</li>
+              <li>Icons and the app manifest update when they change.</li>
+            </ul>
+          </div>
+        </article>
       </section>
     </main>
 
     <footer class="footer" id="footer">
-      <div class="footer-bottom container">
-        <a class="footer-logo-link" href="/#top" aria-label="Bellu Code home"><img class="footer-logo" src="/src/images/only-logo-square.svg" alt="" /></a>
-        <span>© <span id="year"></span> Bellu Code</span>
-        <div class="footer-controls">
-          <button class="theme-toggle" type="button" aria-label="Switch to dark theme">Dark theme</button>
-        </div>
+      <div class="footer-main container">
+        <div class="footer-brand"><a class="footer-logo-link" href="/#top" aria-label="Bellu Code home"><img class="footer-logo" src="/src/images/only-logo-square-mono.svg" alt="" width="40" height="40" /></a></div>
+        <div class="footer-column"><b>Product</b><a href="/#about">About</a><a href="/security-intelligence-graph.html">Security graph</a><a href="/changelog.html">Changelog</a><a href="/#blogs">Blogs</a></div>
+        <div class="footer-column"><b>Projects</b><a href="/#about">Bellu Code</a><a href="/security-intelligence-graph.html">Security Knowledge Graph</a></div>
+        <div class="footer-column"><b>Company</b><a href="https://belluai.com" target="_blank" rel="noopener noreferrer">Bellu AI</a><a href="/#vision">Vision</a><a href="https://belluai.com/terms" target="_blank" rel="noopener noreferrer">Terms and Conditions</a><a href="https://belluai.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a><a href="https://belluai.com/dpa" target="_blank" rel="noopener noreferrer">Data Processing Agreement</a></div>
+        <div class="footer-column"><b>Open source</b><a href="https://github.com/dhana0123/bellu-code" target="_blank" rel="noopener noreferrer"><svg class="ic ic-gh" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.78,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.06,56.06,0,0,0,48.44,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.82,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></svg>GitHub</a><a href="https://github.com/dhana0123/bellu-code/issues" target="_blank" rel="noopener noreferrer">Report a bug</a><a href="https://github.com/dhana0123/bellu-code/pulls" target="_blank" rel="noopener noreferrer">Open a PR</a></div>
       </div>
+      <div class="footer-bottom container"><span>© <span id="year"></span> Bellu Code</span><div class="footer-controls"><label class="sr-only" for="language">Language</label><select id="language" aria-label="Language"><option>EN</option><option>ES</option><option>FR</option></select></div></div>
+      <div class="footer-wordmark container" aria-hidden="true"><img src="/src/images/logo-label-mono-dark.svg" alt="" width="602" height="108" loading="lazy" /></div>
     </footer>
-
-    <script type="module">
-      document.querySelector("#year").textContent = String(new Date().getFullYear());
-      document.querySelector(".theme-toggle").addEventListener("click", (event) => {
-        const dark = document.body.classList.toggle("dark-theme");
-        event.currentTarget.textContent = dark ? "Light theme" : "Dark theme";
-        event.currentTarget.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
-        document.querySelector('meta[name="theme-color"]').content = dark ? "#111110" : "#faf9f6";
-      });
-    </script>
+    <script type="module" src="/src/changelog.js"></script>
   </body>
 </html>

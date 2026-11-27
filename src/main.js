@@ -1,21 +1,24 @@
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 import "./style.css";
+import "./theme.js";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-// Soft, eased scrolling. Skipped when the user prefers reduced motion.
+// Soft, eased scrolling. Each wheel step glides over 1s on an ease-out
+// curve (fast start, long slow finish). It runs even when the OS reports
+// reduced motion, because it only follows the user's own scrolling.
 // Inner scroll areas opt out with data-lenis-prevent.
-if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  new Lenis({
-    autoRaf: true,
-    lerp: 0.085,
-    wheelMultiplier: 0.9,
-    // Sticky header height (alpha banner + nav) plus a little space.
-    anchors: { offset: -112 },
-  });
-}
+new Lenis({
+  autoRaf: true,
+  duration: 1,
+  easing: (t) => 1 - (1 - t) ** 3, // easeOutCubic
+  wheelMultiplier: 1,
+  respectReducedMotion: false,
+  // Sticky header height (alpha banner + nav) plus a little space.
+  anchors: { offset: -112 },
+});
 
 // Hero: pastel isometric floor with labelled slabs (static; animation can be
 // added later on the .iso-tile and .iso-slab groups).
@@ -102,6 +105,220 @@ if (alphaBanner) {
 
 const heroGrid = $("#hero-grid");
 if (heroGrid) renderHeroGrid(heroGrid);
+
+// Sources: a pale isometric cube field with a line running through it. Each
+// connector is a coloured box on the line with its real logo on the front
+// face. Logos are read from the screen-reader list (#source-list) so the
+// markup lives in one place.
+function renderSourcesScene(svg, list) {
+  const W = 1200;
+  const H = 440;
+  const point = (x, y) => `${x.toFixed(1)},${y.toFixed(1)}`;
+  const poly = (pts, fill, extra = "") => `<polygon points="${pts.map(([x, y]) => point(x, y)).join(" ")}" fill="${fill}" ${extra}/>`;
+  // (x, y) is the front corner of the top face; the body hangs below it.
+  const cubeFaces = (x, y, s) => {
+    const h = s * 0.866;
+    return {
+      top: [[x, y - s], [x + h, y - s / 2], [x, y], [x - h, y - s / 2]],
+      left: [[x - h, y - s / 2], [x, y], [x, y + s], [x - h, y + s / 2]],
+      right: [[x, y], [x + h, y - s / 2], [x + h, y + s / 2], [x, y + s]],
+    };
+  };
+
+  // Background field: scattered cubes one or two high, drawn back to front.
+  const random = seededRandom(11);
+  const S = 92;
+  const cells = [];
+  for (let gx = -8; gx <= 16; gx += 1) {
+    for (let gy = -8; gy <= 16; gy += 1) {
+      const x = 600 + (gx - gy) * S * 0.866;
+      const y = 40 + (gx + gy) * S * 0.5;
+      if (x < -S || x > W + S || y < -S || y > H + S * 1.6) continue;
+      const r = random();
+      if (r > 0.42) continue;
+      cells.push({ x, y, height: r < 0.12 ? 2 : 1, depth: gx + gy });
+    }
+  }
+  cells.sort((a, b) => a.depth - b.depth || a.x - b.x);
+  let field = "";
+  cells.forEach(({ x, y, height }) => {
+    for (let z = 0; z < height; z += 1) {
+      const f = cubeFaces(x, y - z * S, S);
+      field += poly(f.left, "#d3dbce") + poly(f.right, "#e2e8de") + poly(f.top, "#edf1ea");
+    }
+  });
+
+  // Boxes sit up and down across the scene and are wired as a network. Every
+  // link runs only along the two isometric directions (30 degrees down-right
+  // and up-right, the same angles as the cube edges), so it bends once like a
+  // track on the grid instead of cutting straight across.
+  const nodes = [
+    { x: 110, y: 160 }, { x: 255, y: 320 }, { x: 395, y: 135 }, { x: 540, y: 290 },
+    { x: 680, y: 120 }, { x: 820, y: 300 }, { x: 960, y: 150 }, { x: 1095, y: 310 },
+  ];
+  // Neighbours along the row, plus fixed cross links one box further away.
+  const links = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [0, 2], [1, 3], [3, 5], [4, 6], [5, 7]];
+  const T = Math.tan(Math.PI / 6); // isometric slope, about 0.577
+  // Split the gap into a down-right run (+x, +T·x) and an up-right run (+x, -T·x).
+  const isoPath = ([x1, y1], [x2, y2]) => {
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const down = (dx + dy / T) / 2; // horizontal length of the down-right run
+    const corner = [x1 + down, y1 + down * T];
+    return `M${point(x1, y1)} L${point(...corner)} L${point(x2, y2)}`;
+  };
+  // Lead-ins from the scene edges, each one a single isometric run.
+  const edgeRun = ({ x, y }, dir, length) => [x + dir[0] * length, y + dir[1] * length * T];
+  const edgeLinks = [
+    [edgeRun(nodes[0], [-1, -1], 200), nodes[0]], [edgeRun(nodes[1], [-1, 1], 300), nodes[1]],
+    [edgeRun(nodes[4], [-1, -1], 260), nodes[4]], [edgeRun(nodes[6], [1, -1], 300), nodes[6]],
+    [edgeRun(nodes[7], [1, 1], 200), nodes[7]], [edgeRun(nodes[3], [1, 1], 300), nodes[3]],
+  ];
+  const linkPaths = links.map(([a, b]) => isoPath([nodes[a].x, nodes[a].y], [nodes[b].x, nodes[b].y]));
+  const allPaths = [
+    ...linkPaths,
+    ...edgeLinks.map(([[x1, y1], { x, y }]) => `M${point(x1, y1)} L${point(x, y)}`),
+  ];
+  const lineMarkup = allPaths.map((d, i) => `<path class="sources-link" style="--i:${i}" d="${d}" pathLength="1"/>`).join("");
+
+  // [top, left] per box; the right face stays white so every logo reads.
+  const colors = [
+    ["#ffd08a", "#f29a2e"], ["#bcd9ff", "#3d86e8"], ["#fbd3f2", "#e58fd0"], ["#c9d4ff", "#5a72e6"],
+    ["#d9c6ff", "#9b6be8"], ["#ffd2c2", "#f2754a"], ["#cfe3ff", "#3f7fe8"], ["#c8f3d4", "#2fb563"],
+  ];
+  const s = 50;
+  const h = s * 0.866;
+  const logoSize = Math.round(s * 0.57); // logo scales with the box
+  const items = $$("li", list);
+  const nodeMarkup = items.map((item, i) => {
+    const { x, y } = nodes[i % nodes.length];
+    const name = $("h3", item)?.textContent.trim() ?? "";
+    const logo = $("svg", item);
+    const viewBox = logo?.getAttribute("viewBox") ?? "0 0 256 256";
+    // Gradient ids must stay unique, so the scene copy gets its own.
+    const art = (logo?.innerHTML ?? "").replaceAll('id="src-', 'id="scene-src-').replaceAll("url(#src-", "url(#scene-src-");
+    const [top, left] = colors[i % colors.length];
+    const f = cubeFaces(x, y, s);
+    const labelWidth = name.length * 7.4 + 18;
+    // The logo is mapped onto the right face: it runs up 1 unit per ~1.73 across.
+    return `<g class="source-node" style="--i:${i}"><title>${name}</title><g class="source-node-body">
+      ${poly([[x - h + 6, y + s / 2 + 10], [x + 6, y + s + 10], [x + h + 6, y + s / 2 + 10], [x + 6, y + 10]], "rgb(40 60 30 / 12%)")}
+      ${poly(f.left, left)}${poly(f.right, "#ffffff")}${poly(f.top, top)}
+      <g transform="matrix(1 -0.57735 0 1 ${x.toFixed(1)} ${y.toFixed(1)})"><svg x="${((h - logoSize) / 2).toFixed(1)}" y="${((s - logoSize) / 2).toFixed(1)}" width="${logoSize}" height="${logoSize}" viewBox="${viewBox}" aria-hidden="true">${art}</svg></g>
+      <g class="source-label"><rect x="${(x - labelWidth / 2).toFixed(1)}" y="${(y + s + 14).toFixed(1)}" width="${labelWidth.toFixed(1)}" height="22" fill="#ffffff"/><text x="${x.toFixed(1)}" y="${(y + s + 29).toFixed(1)}" text-anchor="middle">${name.toUpperCase()}</text></g>
+    </g></g>`;
+  }).join("");
+
+  // The cubes and green streaks run even when the OS reports reduced motion
+  // (Windows "Animation effects" off), same as the scroll and dominoes.
+  // Small isometric cubes travel along the links like data packets. Each one
+  // is centred on (0, 0) and moved by animateMotion without rotating, so it
+  // stays square to the grid. Every other cube runs in reverse.
+  const packetColors = [
+    ["#ffb37a", "#ff4a23"], ["#bcd9ff", "#3d86e8"], ["#c8f3d4", "#2fb563"], ["#d9c6ff", "#7c4fd6"],
+  ];
+  const packet = ([top, side], size) => {
+    const f = cubeFaces(0, size / 2, size);
+    return poly(f.left, side) + poly(f.right, "#ffffff") + poly(f.top, top);
+  };
+  const pulse = linkPaths.map((path, i) => {
+    const dur = (4 + (i % 5) * 0.9).toFixed(1);
+    const begin = (-(i * 1.3) % 6).toFixed(1); // negative start so cubes are spread out from the first frame
+    const points = i % 2 ? "1;0" : "0;1";
+    return `<g class="source-packet">${packet(packetColors[i % packetColors.length], 9)}<animateMotion dur="${dur}s" begin="${begin}s" repeatCount="indefinite" keyPoints="${points}" keyTimes="0;1" calcMode="linear" path="${path}"/></g>`;
+  }).join("");
+
+  // Three stacked SVGs with the same viewBox, each on its own compositor layer:
+  //   1. static background (cube field, dots, lines): painted once, never again
+  //   2. moving parts (green streaks, packet cubes): small and cheap to repaint
+  //   3. connector boxes on top, so packets pass under them
+  // Before this, every animation frame repainted the whole scene, including
+  // thousands of pattern dots, which made scrolling past it stutter.
+  const NS = "http://www.w3.org/2000/svg";
+  const canvas = document.createElement("div");
+  canvas.className = "sources-canvas";
+  svg.replaceWith(canvas);
+  const fx = document.createElementNS(NS, "svg");
+  const top = document.createElementNS(NS, "svg");
+  [svg, fx, top].forEach((layer) => {
+    layer.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    layer.setAttribute("preserveAspectRatio", "xMidYMid slice");
+    canvas.append(layer);
+  });
+  fx.setAttribute("class", "sources-scene-fx");
+  top.setAttribute("class", "sources-scene-top");
+  fx.setAttribute("aria-hidden", "true");
+  top.setAttribute("aria-hidden", "true");
+
+  const title = $("title", svg)?.outerHTML ?? "";
+  svg.innerHTML = `${title}
+    <defs><pattern id="sources-dots" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="1.2" cy="1.2" r="0.8" fill="#c7d0c1"/></pattern></defs>
+    <rect width="${W}" height="${H}" fill="#f3f5f0"/><rect width="${W}" height="${H}" fill="url(#sources-dots)"/>
+    <g stroke="#f8faf6" stroke-width="1.5" stroke-linejoin="round">${field}</g>
+    <g fill="none" stroke="#0a0a0a" stroke-width="1.1" stroke-opacity="0.75">${lineMarkup}</g>`;
+  fx.innerHTML = `<g class="sources-tracers" fill="none" stroke="#1f6b3a" stroke-width="2.6" stroke-linecap="square"></g>${pulse}`;
+  top.innerHTML = nodeMarkup;
+
+  const tracers = startSourceTracers($(".sources-tracers", fx), allPaths);
+
+  // Only animate while the scene is on screen and the tab is visible.
+  let onScreen = true;
+  const sync = () => {
+    if (onScreen && !document.hidden) { fx.unpauseAnimations?.(); tracers?.play(); } else { fx.pauseAnimations?.(); tracers?.pause(); }
+  };
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; sync(); }, { rootMargin: "120px 0px" }).observe(canvas);
+  }
+  document.addEventListener("visibilitychange", sync);
+}
+
+// Dark-green streaks that keep running along the links. Each streak picks a
+// random link, a random direction and a random speed, runs once, then picks
+// again, so the pattern never repeats. Each streak is one dash followed by a
+// gap longer than the path, slid from one end to the other with the Web
+// Animations API.
+// Returns { pause, play } so the scene can stop them while off screen.
+function startSourceTracers(layer, paths, count = 4) {
+  if (!layer || !paths.length || !("animate" in Element.prototype)) return null;
+  const NS = "http://www.w3.org/2000/svg";
+  const pick = () => paths[Math.floor(Math.random() * paths.length)];
+  const current = new Set();
+  let paused = false;
+  for (let i = 0; i < count; i += 1) {
+    const tracer = document.createElementNS(NS, "path");
+    layer.append(tracer);
+    const run = () => {
+      tracer.setAttribute("d", pick());
+      // Measure in real pixels so the dash maths works in every browser.
+      const total = tracer.getTotalLength() || 1;
+      const length = total * (0.12 + Math.random() * 0.14);
+      tracer.style.strokeDasharray = `${length} ${total * 2}`;
+      const forward = Math.random() < 0.5;
+      // Offset `length` hides the dash before the start; -total slides it past the end.
+      const frames = forward
+        ? [{ strokeDashoffset: length }, { strokeDashoffset: -total }]
+        : [{ strokeDashoffset: -total }, { strokeDashoffset: length }];
+      const animation = tracer.animate(frames, {
+        duration: 1300 + Math.random() * 1700,
+        delay: Math.random() * 900,
+        easing: "cubic-bezier(0.45, 0, 0.25, 1)",
+        fill: "both",
+      });
+      if (paused) animation.pause();
+      current.add(animation);
+      animation.onfinish = () => { current.delete(animation); run(); };
+    };
+    run();
+  }
+  return {
+    pause() { paused = true; current.forEach((a) => a.pause()); },
+    play() { paused = false; current.forEach((a) => a.play()); },
+  };
+}
+
+const sourcesScene = $("#sources-scene");
+const sourceList = $("#source-list");
+if (sourcesScene && sourceList) renderSourcesScene(sourcesScene, sourceList);
 
 // Scale the 1024px-wide app preview to its frame so it keeps the reference
 // screenshot's proportions at every screen width.
@@ -525,13 +742,6 @@ window.addEventListener("scroll", () => {
   $(".site-header").classList.toggle("is-scrolled", window.scrollY > 8);
 }, { passive: true });
 
-$(".theme-toggle").addEventListener("click", (event) => {
-  const dark = document.body.classList.toggle("dark-theme");
-  event.currentTarget.textContent = dark ? "Light theme" : "Dark theme";
-  event.currentTarget.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
-  document.querySelector('meta[name="theme-color"]').content = dark ? "#0b0b0b" : "#ffffff";
-});
-
 $("#year").textContent = String(new Date().getFullYear());
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -596,25 +806,45 @@ if (dominoes) {
       slab.inner.setAttribute("transform", `rotate(${angle.toFixed(2)} 18 210)`);
     });
   };
-  layoutDominoes(reduceMotion ? 1 : 0);
-  if (!reduceMotion) {
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const rect = dominoes.getBoundingClientRect();
-        const progress = 1 - (rect.top + rect.height / 2) / window.innerHeight;
-        layoutDominoes(Math.min(1, Math.max(0, progress * 1.4)));
-        ticking = false;
-      });
+  // Scroll-driven, so it runs regardless of the reduced-motion setting.
+  layoutDominoes(0);
+  {
+    // Progress is 0 when the slabs enter at the bottom of the screen and 1
+    // once they are about 40% down it. It is eased every frame so the fall
+    // stays smooth, and it is reachable on tall desktop screens too.
+    let target = 0;
+    let current = 0;
+    let frame = 0;
+    const tick = () => {
+      const rect = dominoes.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      // Wait until the whole row is on screen (bottom edge inside the
+      // viewport), then fall over the next ~30% of the screen height.
+      const start = vh;
+      // Never place the end past the furthest point the page can scroll to,
+      // so the fall always completes on short pages and tall screens.
+      const maxScroll = document.documentElement.scrollHeight - vh;
+      const lowestBottom = rect.bottom + window.scrollY - maxScroll;
+      const end = Math.min(start - 80, Math.max(vh * 0.7, lowestBottom + 10));
+      target = Math.min(1, Math.max(0, (start - rect.bottom) / (start - end)));
+      current += (target - current) * 0.08;
+      if (Math.abs(target - current) < 0.001) current = target;
+      layoutDominoes(current);
+      frame = current === target ? 0 : requestAnimationFrame(tick);
     };
+    const kick = () => { if (!frame) frame = requestAnimationFrame(tick); };
     const dominoObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) window.addEventListener("scroll", onScroll, { passive: true });
-      else window.removeEventListener("scroll", onScroll);
-    });
+      if (entry.isIntersecting) {
+        window.addEventListener("scroll", kick, { passive: true });
+        window.addEventListener("resize", kick, { passive: true });
+        kick();
+      } else {
+        window.removeEventListener("scroll", kick);
+        window.removeEventListener("resize", kick);
+      }
+    }, { rootMargin: "100px 0px" });
     dominoObserver.observe(dominoes);
-    onScroll();
+    kick();
   }
 }
 
