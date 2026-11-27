@@ -948,3 +948,11 @@ body.dark-theme .theme-toggle .ic-sun { display: inline-block; }
 .nav-actions .nav-icon { display: inline-grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--ink, #171717); cursor: pointer; transition: background 0.2s; }
 .nav-actions .nav-icon:hover { background: rgb(128 128 128 / 18%); opacity: 1; }
 .nav-actions .nav-icon .ic { width: 20px; height: 20px; vertical-align: 0; }
+
+/* Nav Download: text on desktop, icon only on small screens so the nav doesn't overflow. */
+.nav-download { display: inline-flex; align-items: center; gap: 6px; }
+.nav-download .ic-download { width: 16px; height: 16px; vertical-align: 0; }
+@media (max-width: 680px) {
+  .nav-actions .nav-download { width: 34px; min-height: 34px; padding: 0; justify-content: center; }
+  .nav-actions .nav-download .nav-download-label { display: none; }
+}

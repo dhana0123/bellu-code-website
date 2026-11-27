@@ -256,7 +256,7 @@ function renderSourcesScene(svg, list) {
     <rect width="${W}" height="${H}" fill="#f3f5f0"/><rect width="${W}" height="${H}" fill="url(#sources-dots)"/>
     <g stroke="#f8faf6" stroke-width="1.5" stroke-linejoin="round">${field}</g>
     <g fill="none" stroke="#0a0a0a" stroke-width="1.1" stroke-opacity="0.75">${lineMarkup}</g>`;
-  fx.innerHTML = `<g class="sources-tracers" fill="none" stroke="#1f6b3a" stroke-width="2.6" stroke-linecap="square"></g>${pulse}`;
+  fx.innerHTML = `<g class="sources-tracers" fill="none" stroke="#0a0a0a" stroke-width="2.6" stroke-linecap="square"></g>${pulse}`;
   top.innerHTML = nodeMarkup;
 
   const tracers = startSourceTracers($(".sources-tracers", fx), allPaths);
@@ -272,7 +272,7 @@ function renderSourcesScene(svg, list) {
   document.addEventListener("visibilitychange", sync);
 }
 
-// Dark-green streaks that keep running along the links. Each streak picks a
+// Black streaks that keep running along the links. Each streak picks a
 // random link, a random direction and a random speed, runs once, then picks
 // again, so the pattern never repeats. Each streak is one dash followed by a
 // gap longer than the path, slid from one end to the other with the Web
@@ -315,6 +315,115 @@ function startSourceTracers(layer, paths, count = 4) {
     play() { paused = false; current.forEach((a) => a.play()); },
   };
 }
+
+// Download cards: each card has a small patterned square next to its title
+// and an art panel with a background pattern plus one large isometric block.
+// The block's front face carries a big icon for that download (monitor,
+// terminal prompt, phone, code braces); its side face has a window grid.
+// Everything is drawn once with no animation.
+const downloadThemes = {
+  // top/front/side are the cube's three faces: a deep shade of the card colour
+  // on the front (instead of black) and slightly lighter tones on the others.
+  desktop: { bg: "#b9f3c4", soft: "#d8f8de", top: "#9ff5bb", front: "#14532d", side: "#4ade80", ink: "#15803d", icon: [1, 1, 1, 1, 0, 1, 1, 1, 1] },
+  terminal: { bg: "#cfe3ff", soft: "#e3eeff", top: "#b8d9ff", front: "#1e3a8a", side: "#60a5fa", ink: "#1d4ed8", icon: [1, 0, 1, 0, 1, 0, 1, 0, 1] },
+  mobile: { bg: "#fbd3f2", soft: "#fde6f8", top: "#ffc6f0", front: "#831843", side: "#f28fd9", ink: "#be185d", icon: [0, 1, 0, 1, 1, 1, 0, 1, 0] },
+  sdk: { bg: "#d9c6ff", soft: "#ebe1ff", top: "#d4bfff", front: "#4c1d95", side: "#a78bfa", ink: "#6d28d9", icon: [1, 1, 0, 1, 0, 1, 0, 1, 1] },
+};
+
+// Small 3 x 3 patterned square beside each card title.
+function renderDownloadIcon(svg, kind) {
+  const theme = downloadThemes[kind];
+  if (!theme) return;
+  svg.setAttribute("viewBox", "0 0 18 18");
+  const cells = theme.icon.map((on, n) => {
+    const x = 3 + (n % 3) * 4;
+    const y = 3 + Math.floor(n / 3) * 4;
+    return `<rect x="${x}" y="${y}" width="4" height="4" fill="${on ? "#ffffff" : theme.ink}"/>`;
+  }).join("");
+  svg.innerHTML = `<rect width="18" height="18" fill="${theme.ink}"/><rect x="2" y="2" width="14" height="14" fill="${theme.side}"/>${cells}`;
+}
+
+function renderDownloadArt(svg, kind) {
+  const theme = downloadThemes[kind];
+  if (!theme) return;
+  const W = 300;
+  const H = 200;
+  const T = Math.tan(Math.PI / 6);
+  const pt = ([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`;
+  const poly = (pts, fill, extra = "") => `<polygon points="${pts.map(pt).join(" ")}" fill="${fill}" ${extra}/>`;
+
+  // Background pattern, one style per card.
+  let pattern = "";
+  if (kind === "desktop") {
+    // Faint outlines of small isometric cubes.
+    const ghost = (x, y, s) => {
+      const h = s * 0.866;
+      return `<path d="M${pt([x, y - s])} L${pt([x + h, y - s / 2])} L${pt([x + h, y + s / 2])} L${pt([x, y + s])} L${pt([x - h, y + s / 2])} L${pt([x - h, y - s / 2])} Z M${pt([x - h, y - s / 2])} L${pt([x, y])} L${pt([x + h, y - s / 2])} M${pt([x, y])} L${pt([x, y + s])}"/>`;
+    };
+    pattern = `<g fill="${theme.soft}" stroke="#ffffff" stroke-opacity="0.8" stroke-width="1">${[[40, 50, 26], [255, 40, 22], [30, 150, 20], [275, 140, 18], [210, 20, 14]].map(([x, y, s]) => ghost(x, y, s)).join("")}</g>`;
+  } else if (kind === "terminal") {
+    // Rising diagonal streaks of dots.
+    for (let c = -200; c < H + W; c += 26) {
+      pattern += `<path d="M0 ${c.toFixed(1)} L${W} ${(c - T * W).toFixed(1)}"/>`;
+    }
+    pattern = `<g fill="none" stroke="#ffffff" stroke-opacity="0.85" stroke-width="1.4" stroke-dasharray="1 7" stroke-linecap="round">${pattern}</g>`;
+  } else if (kind === "mobile") {
+    // Even dot grid.
+    pattern = `<defs><pattern id="dl-dots-mobile" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.1" fill="${theme.side}" fill-opacity="0.55"/></pattern></defs><rect width="${W}" height="${H}" fill="url(#dl-dots-mobile)"/>`;
+  } else {
+    // Thin white isometric grid.
+    for (let c = -W; c < H + W; c += 22) {
+      pattern += `<path d="M0 ${c.toFixed(1)} L${W} ${(c + T * W).toFixed(1)}M0 ${c.toFixed(1)} L${W} ${(c - T * W).toFixed(1)}"/>`;
+    }
+    pattern = `<g stroke="#ffffff" stroke-opacity="0.6" stroke-width="1">${pattern}</g>`;
+  }
+
+  // The block. (x, y) is the front corner of the top face; the body hangs below.
+  const S = 118;
+  const h = S * 0.866;
+  const x = 160;
+  const y = 122;
+  const top = [[x, y - S], [x + h, y - S / 2], [x, y], [x - h, y - S / 2]];
+  const left = [[x - h, y - S / 2], [x, y], [x, y + S], [x - h, y + S / 2]];
+  const right = [[x, y], [x + h, y - S / 2], [x + h, y + S / 2], [x, y + S]];
+  const shadow = poly([[x - h + 14, y + S / 2 + 4], [x + 14, y + S + 4], [x + h + 14, y + S / 2 + 4], [x + 14, y + 4]], "rgb(0 0 0 / 10%)");
+
+  // Window grid on the right face (white cells, a few dark).
+  const onRight = (a, b) => [x + h * a, y - (S / 2) * a + S * b];
+  const darkCells = new Set([1, 6, 9, 11]);
+  let windows = "";
+  for (let i = 0; i < 4; i += 1) {
+    for (let j = 0; j < 3; j += 1) {
+      const a0 = (i + 0.14) / 4;
+      const a1 = (i + 0.86) / 4;
+      const b0 = (j + 0.14) / 4;
+      const b1 = (j + 0.86) / 4;
+      const fill = darkCells.has(i * 3 + j) ? theme.front : "#ffffff";
+      windows += poly([onRight(a0, b0), onRight(a1, b0), onRight(a1, b1), onRight(a0, b1)], fill);
+    }
+  }
+
+  // Big icon on the dark front-left face. Face-local units: x across (0..h),
+  // y down, sheared to follow the face.
+  const icons = {
+    desktop: '<rect x="4" y="5" width="16" height="11"/><path d="M9 20h6M12 16v4"/>',
+    terminal: '<path d="M5 8l4 4-4 4M12 16h7"/>',
+    mobile: '<rect x="8" y="3" width="8" height="17"/><path d="M11 17h2"/>',
+    sdk: '<path d="M9 7l-5 5 5 5M15 7l5 5-5 5"/>',
+  };
+  const iconSize = 52;
+  const icon = `<g transform="matrix(1 ${T.toFixed(5)} 0 1 ${(x - h).toFixed(1)} ${(y - S / 2).toFixed(1)})">
+      <g transform="translate(${((h - iconSize) / 2).toFixed(1)} 16) scale(${(iconSize / 24).toFixed(3)})" fill="none" stroke="${theme.top}" stroke-width="1.8" stroke-linecap="square">${icons[kind]}</g>
+    </g>`;
+
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  svg.setAttribute("preserveAspectRatio", "xMidYMid slice");
+  svg.innerHTML = `<rect width="${W}" height="${H}" fill="${theme.bg}"/>${pattern}${shadow}
+    ${poly(left, theme.front)}${icon}${poly(right, theme.side)}${windows}${poly(top, theme.top, `stroke="${theme.side}" stroke-width="1.5"`)}`;
+}
+
+$$("[data-icon]").forEach((svg) => renderDownloadIcon(svg, svg.dataset.icon));
+$$("[data-art]").forEach((svg) => renderDownloadArt(svg, svg.dataset.art));
 
 const sourcesScene = $("#sources-scene");
 const sourceList = $("#source-list");

@@ -319,20 +319,20 @@ h1 { max-width: 19ch; font-size: clamp(44px, 7vw, 108px); line-height: 1; letter
 .about-section .block-head { display: block; margin: 0; }
 .about-section .block-head .tag { margin-bottom: 20px; }
 .about-intro { max-width: 640px; color: var(--muted); font-size: 17px; }
-.about-capabilities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 40px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
-.about-capabilities article { min-height: 180px; padding: 24px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.2s; }
+.about-capabilities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 32px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.about-capabilities article { min-height: 148px; padding: 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.2s; }
 .about-capabilities article:nth-child(4n + 1):hover { background: var(--lilac); }
 .about-capabilities article:nth-child(4n + 2):hover { background: var(--mint); }
 .about-capabilities article:nth-child(4n + 3):hover { background: var(--sky); }
 .about-capabilities article:nth-child(4n + 4):hover { background: var(--peach); }
 body.dark-theme .about-capabilities article:hover { color: #0a0a0a; }
-.cap-stage { display: inline-block; margin-bottom: 28px; padding: 3px 8px; background: var(--soft); color: #0a0a0a; font: 500 10px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
+.cap-stage { display: inline-block; margin-bottom: 20px; padding: 3px 8px; background: var(--soft); color: #0a0a0a; font: 500 10px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
 .about-capabilities article:nth-child(4n + 1) .cap-stage { background: var(--lilac); }
 .about-capabilities article:nth-child(4n + 2) .cap-stage { background: var(--mint); }
 .about-capabilities article:nth-child(4n + 3) .cap-stage { background: var(--sky); }
 .about-capabilities article:nth-child(4n + 4) .cap-stage { background: var(--peach); }
 .about-capabilities article:hover .cap-stage { background: var(--paper); }
-.about-capabilities h3 { margin-bottom: 8px; font-size: 19px; letter-spacing: -0.02em; }
+.about-capabilities h3 { margin-bottom: 6px; font-size: 18px; letter-spacing: -0.02em; }
 .about-capabilities p { color: var(--muted); font-size: 14px; }
 .about-capabilities article:hover p { color: inherit; }
 
@@ -341,7 +341,7 @@ body.dark-theme .about-capabilities article:hover { color: #0a0a0a; }
 .sources-head .tag { grid-column: 1 / -1; }
 /* Same h2 size as the other sections ("What is Bellu Code?"). */
 .sources-head h2 { grid-column: 1 / -1; grid-row: 2; max-width: 16ch; }
-.sources-actions { grid-column: 2; grid-row: 3; align-self: center; display: flex; gap: 8px; }
+.sources-actions { grid-column: 2; grid-row: 3; align-self: center; display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
 .sources-lead { grid-column: 1; grid-row: 3; max-width: 560px; color: var(--muted); font-size: 16px; }
 .sources-stage { overflow: hidden; border: 1px solid var(--line); }
 /* Fixed light colours (like the hero stage) so the scene reads the same in both themes. */
@@ -447,7 +447,27 @@ body.dark-theme .sources-cards article:hover .sources-card-tag { background: #ff
 .finding-selection { margin-top: 8px; color: var(--muted); font: 11px var(--mono); }
 
 /* Changelog */
+/* Download: four cards. Each has a tinted title area, an art panel (pattern +
+   isometric block with an icon, drawn by main.js) and a black button.
+   Fixed light colours so the cards read the same in both themes. */
+.download-cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.download-card { display: flex; flex-direction: column; overflow: hidden; background: #eef3ec; color: #0a0a0a; transition: transform 0.25s var(--ease); }
+.download-card[data-kind="terminal"] { background: #edf2fa; }
+.download-card[data-kind="mobile"] { background: #faeef7; }
+.download-card[data-kind="sdk"] { background: #f1edfa; }
+.download-card:hover { transform: translateY(-4px); }
+.download-card-head { padding: 14px 16px; }
+.download-card h3 { display: flex; align-items: center; gap: 10px; font-size: 18px; letter-spacing: -0.02em; }
+.download-icon { width: 18px; height: 18px; flex: none; }
+.download-card p { margin-top: 10px; min-height: 2.9em; color: #1f1f1f; font-size: 14px; line-height: 1.45; }
+.download-art { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; max-width: none; }
+.download-cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 12px; padding: 12px 14px; background: #0a0a0a; color: #fff; font: 500 14px var(--sans); transition: background 0.2s; }
+.download-cta:hover { background: #262626; }
+.download-cta span { transition: transform 0.2s var(--ease); }
+.download-cta:hover span { transform: translateX(3px); }
+
 .changelog-grid { border-top: 1px solid var(--line); }
+.changelog-more { margin-top: 20px; }
 .change-row { display: grid; grid-template-columns: 110px 76px minmax(0, 1fr) 20px; align-items: center; gap: 16px; padding: 10px 12px; border-bottom: 1px solid var(--line); transition: background 0.2s; }
 .change-row[data-kind="new"]:hover { background: var(--mint); }
 .change-row[data-kind="improved"]:hover { background: var(--sky); }
@@ -589,7 +609,10 @@ body.dark-theme .change-row:hover .update-tag { background: #fff; }
   .mission { grid-template-columns: 1fr; }
   .mission-logo { min-height: 240px; }
   .blog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* One column, so the buttons can't push past the screen edge. */
+  .sources-head { grid-template-columns: minmax(0, 1fr); }
   .sources-head .sources-actions { grid-column: 1; grid-row: 4; }
+  .download-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer-main { grid-template-columns: repeat(3, 1fr); }
   .footer-brand { grid-column: 1 / -1; }
 }
@@ -599,6 +622,10 @@ body.dark-theme .change-row:hover .update-tag { background: #fff; }
   :root { --gutter: 16px; }
   .section { padding-block: 72px; }
   .nav-actions .button-soft { display: none; }
+  /* Download becomes an icon-only square so the nav fits on small screens. */
+  .nav-actions .nav-download { width: 34px; min-height: 34px; padding: 0; justify-content: center; }
+  .nav-actions .nav-download .nav-download-label { display: none; }
+  .nav-actions { gap: 6px; }
   h1 { font-size: clamp(40px, 11vw, 56px); }
   .hero-stage { --stage-pad: 12px; padding-bottom: 48px; }
   .hero-intro { width: calc(100% + var(--stage-pad) * 2); margin-right: calc(-1 * var(--stage-pad)); padding: 4px 0 20px; }
@@ -612,6 +639,9 @@ body.dark-theme .change-row:hover .update-tag { background: #fff; }
   .alpha-banner .alpha-text { flex-basis: calc(100% - 100px); }
   .about-capabilities { grid-template-columns: 1fr; }
   .about-capabilities article { min-height: 0; padding: 20px; }
+  .download-cards { grid-template-columns: 1fr; }
+  /* Buttons share the row and shrink; on very narrow screens they stack. */
+  .sources-actions .button { flex: 1 1 160px; justify-content: center; }
   /* Keep the boxes readable: the scene keeps a minimum width and scrolls sideways. */
   .sources-stage { overflow-x: auto; scrollbar-width: none; }
   .sources-stage::-webkit-scrollbar { display: none; }
@@ -646,3 +676,6 @@ body.dark-theme .theme-toggle .ic-sun { display: inline-block; }
 .nav-actions .nav-icon { display: inline-grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--ink, #171717); cursor: pointer; transition: background 0.2s; }
 .nav-actions .nav-icon:hover { background: rgb(128 128 128 / 18%); opacity: 1; }
 .nav-actions .nav-icon .ic { width: 20px; height: 20px; vertical-align: 0; }
+/* Nav Download: text on desktop, icon only on mobile (see the 680px rule). */
+.nav-download { display: inline-flex; align-items: center; gap: 6px; }
+.nav-download .ic-download { width: 16px; height: 16px; vertical-align: 0; }
